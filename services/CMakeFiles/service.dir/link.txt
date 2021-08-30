@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -pthread    CMakeFiles/service.dir/main.cpp.o  -o service -rdynamic -lpthread 
