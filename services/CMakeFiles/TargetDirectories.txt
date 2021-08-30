@@ -1,1 +1,0 @@
-/home/lighthouse/proj/20210630/phoneCheck/services/CMakeFiles/service.dir
