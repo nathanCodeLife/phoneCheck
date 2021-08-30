@@ -1,9 +1,7 @@
-
-
+#ifndef __task__
+#define __task__
 class task{
 public:
-    void process(){
-        return;
-    }
-
+    virtual void process()=0;
 };
+#endif
