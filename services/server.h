@@ -1,3 +1,5 @@
+#ifndef _SERVER_H_
+#define _SERVER_H_
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -17,3 +19,6 @@ public:
     int port;
     char* ip_addr;
 };
+
+
+#endif

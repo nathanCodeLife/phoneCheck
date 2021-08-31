@@ -14,7 +14,6 @@
 #include "tcpserver.h"
 #include "simpletask.h"
 #include "redistask.h"
-
 #define MAX_EVENT_NUMBER 1024
 #define BUFFER_SIZE 255
 
@@ -42,8 +41,13 @@ tcpserver::tcpserver(threadpool<task> *p)
 {
     pool = p;
 }
+redisServer* tcpserver::getFreeRedis(){
+    return m_redis;
+}
 bool tcpserver::connect()
 {
+    m_redis = new redisServer();
+    m_redis->connect();
     const char* ip = "127.0.0.1";
     int port = 8001;
     int ret= 0 ;
@@ -136,7 +140,8 @@ bool tcpserver::dealMsg(const char* buff)
 
     memcpy(key,&buff[4],len1);
     memcpy(value,&buff[4+len1],len2);
-    redisTask* pCommand = new redisTask(subType,key,value);
+    redisServer *c = getFreeRedis();
+    redisTask* pCommand = new redisTask(c,subType,key,value);
     pool->append(pCommand);
 }
 
