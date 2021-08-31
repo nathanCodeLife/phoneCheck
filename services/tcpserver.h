@@ -16,6 +16,7 @@ public:
     
     tcpserver(threadpool<task>* p);
     bool connect();
+    bool dealMsg(const char* msg);
 private:
     threadpool<task>* pool;
 };

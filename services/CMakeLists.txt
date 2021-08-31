@@ -8,6 +8,7 @@ set(SRC
     main.cpp
     tcpserver.cpp
     simpletask.cpp
+    redistask.cpp
     threadpool.hpp
     )
 add_executable(service ${SRC})

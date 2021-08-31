@@ -1,12 +1,15 @@
 #include "task.h"
 #include <string>
-
+enum redisCommandType{
+    READSTRING,
+    WRITESTRING,
+};
 class redisTask: public task{
 public:
-    redisTask(int type, std::string key, std::string value);
+    redisTask(redisCommandType type, std::string key, std::string value);
     void process();
 private:
-    int m_iType;
+    redisCommandType m_Type;
     std::string m_sKey;
     std::string m_sValue;
 };

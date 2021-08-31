@@ -13,8 +13,15 @@
 #include <pthread.h>
 #include "tcpserver.h"
 #include "simpletask.h"
+#include "redistask.h"
+
 #define MAX_EVENT_NUMBER 1024
-#define BUFFER_SIZE 5
+#define BUFFER_SIZE 255
+
+enum msgType{
+    SIMPLE,
+    REDIS
+};
 static int setnonblocking( int fd )
 {
     int old_option = fcntl(fd, F_GETFL);
@@ -97,10 +104,11 @@ bool tcpserver::connect()
                     }
                     else
                     {   
-                        task* ptask = new simpleTask(buf);
-                        pool->append(ptask);
+                        //task* ptask = new simpleTask(buf);
+                        //pool->append(ptask);
+                        
                         printf("tcp %s\n",buf);
-                    
+                        dealMsg(buf);
                     }
             }
             else
@@ -112,3 +120,23 @@ bool tcpserver::connect()
     close( listenfd);
     return 0;
 }
+
+bool tcpserver::dealMsg(const char* buff)
+{
+    int msglen = strlen(buff);
+    //if(msglen !=)
+    char key[256];
+    char value[256];
+    msgType t = static_cast<msgType>(buff[0]-'0');
+    redisCommandType subType = static_cast<redisCommandType>(buff[1]-'0');
+    int len1 = buff[2]-'0';
+    int len2 = buff[3]-'0';
+    memset(key,0,255);
+    memset(value,0,255);
+
+    memcpy(key,&buff[4],len1);
+    memcpy(value,&buff[4+len1],len2);
+    redisTask* pCommand = new redisTask(subType,key,value);
+    pool->append(pCommand);
+}
+
